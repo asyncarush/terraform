@@ -26,3 +26,11 @@ module "routes" {
   internet_gateway_id = module.internet_gateway.internet_gateway_id
   public_subnet_ids  = module.subnet.public_subnet_ids
 }
+
+module "ecs" {
+  source = "../../modules/cluster/ecs"
+  
+  vpc_id             = module.vpc.vpc_id
+  vpc_cidr           = module.vpc.vpc_cidr_block
+  private_subnet_ids = module.subnet.private_subnet_ids
+}
