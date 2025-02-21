@@ -30,15 +30,16 @@ resource "aws_security_group" "lb_sg" {
 }
 
 resource "aws_lb" "load_balancers" {
-  count = 4  # Number of load balancers you want to create
+  for_each = var.load_balancer_configs
 
-  name               = "load-balancer-${count.index + 1}"
-  internal           = false
+  name               = each.value.name
+  internal           = each.value.internal
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = var.public_subnet_ids
+  subnets            = each.value.internal ? var.private_subnet_ids : var.public_subnet_ids
 
   tags = {
-    Name = "LoadBalancer-${count.index + 1}"
+    Name        = each.value.name
+    Environment = each.value.environment
   }
 }

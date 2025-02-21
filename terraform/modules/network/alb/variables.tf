@@ -43,18 +43,3 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs"
   type        = list(string)
 }
-
-resource "aws_lb" "load_balancers" {
-  for_each = var.load_balancer_configs
-
-  name               = each.value.name
-  internal           = each.value.internal
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = each.value.internal ? var.private_subnet_ids : var.public_subnet_ids
-
-  tags = {
-    Name        = each.value.name
-    Environment = each.value.environment
-  }
-}

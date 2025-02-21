@@ -31,6 +31,6 @@ module "ecs" {
   source = "../../modules/cluster/ecs"
   
   vpc_id             = module.vpc.vpc_id
-  vpc_cidr           = module.vpc.vpc_cidr_block
+  vpc_cidr           = module.vpc.cidr_block
   private_subnet_ids = module.subnet.private_subnet_ids
 }
