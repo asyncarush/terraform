@@ -99,3 +99,32 @@ module "kinesis" {
   private_subnet_ids = module.subnet.private_subnet_ids
   vpc_security_group_id = module.iam.role_id
 }
+
+module "appsync" {
+  source = "../../modules/web/appsync"
+  environment        = "dev"
+  apis = {
+    "amplifyData" = {
+      authentication_type = "AWS_LAMBDA"
+      log_level           = "ERROR"
+      schema              = file("${path.module}/schemas/amplifyData.graphql")
+      dynamodb_table_name = null
+    },
+    
+    "halo-dev" = {
+      authentication_type = "AWS_LAMBDA"
+      log_level           = "ERROR"
+      schema              = file("${path.module}/schemas/halo-dev.graphql")
+      dynamodb_table_name = null
+    }
+  }
+}
+
+module "amplify" {
+  source = "../../modules/web/amplify"
+  
+  app_name         = "lifedata-web"
+  repository_url   = "https://github.com/your-org/lifedata-web"
+  branch_name      = "main"
+  environment      = "dev"
+}

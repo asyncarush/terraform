@@ -1,0 +1,17 @@
+type Query {
+  getAmplifyData: AmplifyData
+}
+
+type Mutation {
+  createAmplifyData(input: AmplifyDataInput!): AmplifyData
+}
+
+type AmplifyData {
+  id: ID!
+  timestamp: Int
+  data: String
+}
+
+input AmplifyDataInput {
+  data: String!
+}

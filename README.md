@@ -10,6 +10,7 @@ LifeData is a comprehensive AWS infrastructure project designed for secure, scal
 - **Data Pipeline**
 - **Containerized Services**
 - **Security Configurations**
+- **Web Hosting**
 
 ## 📂 Project Structure
 
@@ -26,12 +27,15 @@ terraform/
 │   │   └── routes/
 │   ├── cluster/
 │   │   └── ecs/
-│   └── data-pipeline/
-│       ├── dynamodb/
-│       ├── kinesis/
-│       ├── lambda/
-│       ├── s3/
-│       └── iam/
+│   ├── data-pipeline/
+│   │   ├── dynamodb/
+│   │   ├── kinesis/
+│   │   ├── lambda/
+│   │   ├── s3/
+│   │   └── iam/
+│   └── web/
+│       ├── amplify/
+│       └── appsync/
 └── lambda/
 ```
 
@@ -57,7 +61,13 @@ terraform/
 - Task Definitions
 - Service Configurations
 
-## 🔒 Security Features
+### Web Services
+- AWS AppSync for GraphQL API
+- AWS Amplify for web application deployment
+- Continuous integration and deployment (CI/CD)
+- Private subnet configuration
+
+### Security Features
 
 - Private subnet deployment
 - VPC endpoints

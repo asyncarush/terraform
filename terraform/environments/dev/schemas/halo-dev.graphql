@@ -1,0 +1,17 @@
+type Query {
+  getHaloData: HaloData
+}
+
+type Mutation {
+  createHaloData(input: HaloDataInput!): HaloData
+}
+
+type HaloData {
+  id: ID!
+  timestamp: Int
+  data: String
+}
+
+input HaloDataInput {
+  data: String!
+}
