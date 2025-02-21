@@ -1,47 +1,131 @@
-# Terraform AWS Network Infrastructure
+# LifeData Dev Terraform Infrastructure
 
-## Project Structure
+## 🌐 Project Overview
+
+LifeData is a comprehensive AWS infrastructure project designed for secure, scalable, and efficient data management using Terraform.
+
+### 🚀 Key Components
+
+- **Network Infrastructure**
+- **Data Pipeline**
+- **Containerized Services**
+- **Security Configurations**
+
+## 📂 Project Structure
 
 ```
 terraform/
 ├── environments/
-│   └── dev/
-│       ├── main.tf       # Main configuration for dev environment
-│       └── provider.tf   # Provider configuration
-└── modules/
-    └── network/
-        ├── vpc/
-        │   ├── main.tf
-        │   ├── variables.tf
-        │   └── outputs.tf
-        ├── subnet/
-        │   ├── main.tf
-        │   ├── variables.tf
-        │   └── outputs.tf
-        ├── nat/
-        │   ├── main.tf
-        │   └── outputs.tf
-        ├── routes/
-        │   └── main.tf
-        └── internet-gateway/
-            └── main.tf
+│   ├── dev/
+│   └── prod/
+├── modules/
+│   ├── network/
+│   │   ├── vpc/
+│   │   ├── subnet/
+│   │   ├── nat/
+│   │   └── routes/
+│   ├── cluster/
+│   │   └── ecs/
+│   └── data-pipeline/
+│       ├── dynamodb/
+│       ├── kinesis/
+│       ├── lambda/
+│       ├── s3/
+│       └── iam/
+└── lambda/
 ```
 
-## Getting Started
+## 🛠 Infrastructure Components
 
-1. Navigate to `terraform/environments/dev`
-2. Run `terraform init`
-3. Run `terraform plan`
-4. Run `terraform apply`
+### Network
 
-## Modules
+- VPC with public and private subnets
+- NAT Gateway
+- Internet Gateway
+- Route Tables
 
-- `vpc`: Defines the VPC configuration
-- `subnet`: Creates public and private subnets
-- `nat`: Sets up NAT Gateway for private subnets
-- `routes`: Configures route tables
-- `internet-gateway`: Creates Internet Gateway
+### Data Management
 
-## Customization
+- DynamoDB for NoSQL storage
+- Kinesis for real-time streaming
+- S3 for data storage
+- Lambda for serverless transformations
 
-Modify variables in each module's `variables.tf` to customize your infrastructure.
+### Container Orchestration
+
+- ECS Cluster
+- Task Definitions
+- Service Configurations
+
+## 🔒 Security Features
+
+- Private subnet deployment
+- VPC endpoints
+- Least-privilege IAM roles
+- Encryption at rest
+- Secure network configurations
+
+## 📋 Prerequisites
+
+- Terraform 1.0+
+- AWS CLI configured
+- AWS Account
+- Basic understanding of cloud infrastructure
+
+## 🚦 Getting Started
+
+1. Clone the repository
+2. Configure AWS credentials
+3. Navigate to desired environment
+4. Initialize Terraform
+   ```bash
+   cd terraform/environments/dev
+   terraform init
+   ```
+5. Plan and apply infrastructure
+   ```bash
+   terraform plan
+   terraform apply
+   ```
+
+## 🔧 Customization
+
+Customize infrastructure by modifying:
+
+- Environment-specific variables
+- Module configurations
+- IAM policies
+- Network settings
+
+## 📊 Monitoring & Logging
+
+- CloudWatch logs
+- Lambda function monitoring
+- ECS service insights
+- S3 access logging
+
+## 💰 Cost Optimization
+
+- Serverless architecture
+- PAY_PER_REQUEST billing
+- Resource tagging
+- Lifecycle management
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Create Pull Request
+
+## 📄 License
+
+[Specify your license]
+
+## 📧 Contact
+
+[Your contact information]
+
+## 🛡️ Disclaimer
+
+This infrastructure is a template. Always review and adjust according to your specific security and compliance requirements.

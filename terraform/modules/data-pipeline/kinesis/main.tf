@@ -10,7 +10,7 @@ resource "aws_security_group" "kinesis_sg" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.selected.cidr_block]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
@@ -26,10 +26,10 @@ resource "aws_security_group" "kinesis_sg" {
   }
 }
 
-# Retrieve VPC Details
-data "aws_vpc" "selected" {
-  id = var.vpc_id
-}
+# # Retrieve VPC Details
+# data "aws_vpc" "selected" {
+#   cidr_block = var.vpc_cidr
+# }
 
 resource "aws_kinesis_stream" "data_stream" {
   name        = var.stream_name
@@ -44,18 +44,19 @@ resource "aws_kinesis_stream" "data_stream" {
 
 resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
   name        = var.firehose_name
-  destination = "s3"
+  destination = "extended_s3"
 
   kinesis_source_configuration {
     kinesis_stream_arn = aws_kinesis_stream.data_stream.arn
     role_arn           = var.lambda_role_arn
   }
 
-  s3_configuration {
-    role_arn        = var.lambda_role_arn
-    bucket_arn      = var.s3_bucket_arn
-    buffer_size     = var.buffer_size
-    buffer_interval = var.buffer_interval
+  extended_s3_configuration {
+    role_arn           = var.lambda_role_arn
+    bucket_arn         = var.s3_bucket_arn
+    # buffer_size        = var.buffer_size
+    # buffer_interval    = var.buffer_interval
+    compression_format = "UNCOMPRESSED"
 
     cloudwatch_logging_options {
       enabled         = true
@@ -64,27 +65,23 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose_stream" {
     }
   }
 
-  # VPC Configuration
-  vpc_configuration {
-    subnet_ids         = var.private_subnet_ids
-    security_group_ids = [aws_security_group.kinesis_sg.id]
-  }
+  # Optional VPC Configuration
+  # Note: This requires additional setup in the AWS provider
+  # Uncomment and configure as needed
+  # vpc_config {
+  #   subnet_ids         = var.private_subnet_ids
+  #   security_group_ids = [aws_security_group.kinesis_sg.id]
+  # }
 
-  dynamic "processing_configuration" {
-    for_each = var.lambda_arn != null ? [1] : []
-    content {
-      enabled = true
-
-      processors {
-        type = "Lambda"
-
-        parameters {
-          parameter_name  = "LambdaArn"
-          parameter_value = var.lambda_arn
-        }
-      }
-    }
-  }
+  # Optional Processing Configuration
+  # Uncomment and configure as needed
+  # processors {
+  #   type = "Lambda"
+  #   parameters {
+  #     parameter_name  = "LambdaArn"
+  #     parameter_value = var.lambda_arn
+  #   }
+  # }
 
   tags = {
     Name        = var.firehose_name

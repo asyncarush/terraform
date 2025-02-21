@@ -1,58 +1,111 @@
-# Data Pipeline Module
+# LifeData Data Pipeline Module
 
 ## Overview
-This Terraform module creates a comprehensive data pipeline infrastructure using AWS services:
-- DynamoDB for data storage
-- Kinesis Stream for data streaming
-- Kinesis Firehose for data delivery
-- Lambda for data transformation
-- S3 for processed data storage
 
-## Components
-- `dynamodb/`: DynamoDB table configuration
-- `kinesis/`: Kinesis Stream and Firehose configuration
-- `lambda/`: Lambda function for data transformation
-- `s3/`: S3 bucket for storing processed data
-- `iam/`: IAM roles and policies for pipeline components
+This Terraform module creates a comprehensive, secure, and scalable data pipeline infrastructure using AWS services:
+
+### Components
+
+- **DynamoDB**: NoSQL database for data storage
+- **Kinesis**: Real-time data streaming
+- **Lambda**: Serverless data transformation
+- **S3**: Processed data storage
+- **IAM**: Secure access management
+
+## Architecture
+
+```
+[DynamoDB] → [Kinesis Stream] → [Lambda Transform] → [Kinesis Firehose] → [S3 Bucket]
+```
+
+## Features
+
+- Private subnet deployment
+- VPC endpoint for S3
+- Least-privilege IAM roles
+- Encryption at rest
+- Flexible configuration
+- Environment-specific setup
+
+## Prerequisites
+
+- Terraform 1.0+
+- AWS Provider
+- VPC and Subnet modules
 
 ## Usage Example
+
 ```hcl
 module "data_pipeline" {
   source = "./modules/data-pipeline"
 
-  # Configure each component as needed
-  dynamodb_config = {
-    table_name = "my-input-data-table"
-  }
+  # DynamoDB Configuration
+  table_name     = "lifedata-dev"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "id"
 
-  kinesis_config = {
-    stream_name = "my-data-stream"
-    shard_count = 1
-  }
+  # S3 Configuration
+  bucket_name    = "lifedata-processed"
 
-  lambda_config = {
-    function_name = "data-transformation-lambda"
-    lambda_zip_path = "path/to/lambda/code.zip"
-  }
-
-  s3_config = {
-    bucket_name = "my-processed-data-bucket"
-  }
+  # VPC Configuration
+  vpc_id         = module.vpc.vpc_id
+  subnet_ids     = module.subnet.private_subnet_ids
 }
 ```
 
-## Security Best Practices
-- Encryption at rest for S3 and DynamoDB
-- IAM roles with least-privilege access
-- Public access blocked for S3
-- Server-side encryption for S3
+## Security Considerations
+
+- All resources deployed in private subnets
+- S3 access via VPC endpoint
+- Server-side encryption enabled
+- Strict IAM policies
 
 ## Customization
-Modify variables in each component's `variables.tf` to customize the pipeline.
 
-## Requirements
-- Terraform 1.0+
-- AWS Provider
+Modify variables in each module's `variables.tf` to customize:
+
+- Resource names
+- Billing modes
+- Encryption settings
+- Access configurations
 
 ## Outputs
-Each module provides outputs for resource names, ARNs, and IDs for further reference.
+
+Each module provides outputs for:
+
+- Resource names
+- ARNs
+- Identifiers
+
+## Monitoring
+
+- CloudWatch logs enabled
+- Lambda function logging
+- Kinesis stream metrics
+
+## Cost Optimization
+
+- PAY_PER_REQUEST billing mode
+- S3 lifecycle management
+- Serverless architecture
+
+## Troubleshooting
+
+- Check IAM permissions
+- Verify VPC configurations
+- Review Lambda function logs
+
+## Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push and create Pull Request
+
+## License
+
+[Specify your license]
+
+## Contact
+
+[Your contact information]

@@ -51,7 +51,12 @@ variable "environment" {
 }
 
 variable "vpc_id" {
-  description = "VPC ID for private subnet configuration"
+  description = "VPC ID for the ECS cluster"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "CIDR block of the VPC"
   type        = string
 }
 

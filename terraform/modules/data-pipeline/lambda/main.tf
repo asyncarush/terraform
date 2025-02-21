@@ -8,7 +8,7 @@ resource "aws_security_group" "lambda_sg" {
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.selected.cidr_block]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
@@ -25,9 +25,9 @@ resource "aws_security_group" "lambda_sg" {
 }
 
 # Retrieve VPC Details
-data "aws_vpc" "selected" {
-  id = var.vpc_id
-}
+# data "aws_vpc" "selected" {
+#   cidr_block = var.vpc_cidr
+# }
 
 # Lambda Function Configuration
 
