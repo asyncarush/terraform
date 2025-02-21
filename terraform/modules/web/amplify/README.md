@@ -1,9 +1,11 @@
 # AWS Amplify Module
 
 ## Overview
+
 This Terraform module configures an AWS Amplify application with comprehensive deployment and hosting capabilities.
 
 ## Features
+
 - Configurable Git repository integration
 - Automatic build and deployment
 - Environment variable management
@@ -20,7 +22,7 @@ module "lifedata_web" {
   app_name     = "lifedata-web"
   repository_url = "https://github.com/your-org/lifedata-web"
   branch_name  = "main"
-  
+
   environment_variables = {
     REACT_APP_API_URL = "https://api.lifedata.com"
   }
@@ -31,6 +33,7 @@ module "lifedata_web" {
 ```
 
 ## Variables
+
 - `app_name`: Name of the Amplify application
 - `repository_url`: Git repository URL
 - `branch_name`: Branch to deploy (default: main)
@@ -39,14 +42,17 @@ module "lifedata_web" {
 - `framework`: Web framework (default: React)
 
 ## Outputs
+
 - `amplify_app_id`: Unique Amplify app identifier
 - `amplify_branch_url`: Deployed branch URL
 - `custom_domain_url`: Custom domain URL (if configured)
 
 ## Security Considerations
+
 - Use environment variables for sensitive configuration
 - Implement least-privilege IAM roles
 - Use access tokens securely
 
 ## Customization
+
 Modify variables to adapt to your specific web application requirements.

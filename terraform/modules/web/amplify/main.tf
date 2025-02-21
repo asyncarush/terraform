@@ -1,45 +1,42 @@
 # Amplify App Configuration
+resource "aws_amplify_app" "lifedata_apps" {
+  for_each = var.amplify_apps
 
-resource "aws_amplify_app" "lifedata_app" {
-  name       = var.app_name
-  repository = var.repository_url
+  name       = each.value.app_name
+  repository = each.value.repository_url
 
-  # Basic build specification
-  build_spec = <<-EOT
-    version: 1
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - npm install
-        build:
-          commands:
-            - npm run build
-      artifacts:
-        baseDirectory: build
-        files:
-          - '**/*'
-  EOT
+  # Build specification
+  build_spec = each.value.build_spec
 
-  access_token = var.repository_access_token
+  # Optional access token for private repositories
+  access_token = lookup(each.value, "access_token", null)
+
+  # Custom rules for single-page applications
+  custom_rule {
+    source = "/<*>"
+    status = "404-200"
+    target = "/index.html"
+  }
 
   tags = {
-    Name        = var.app_name
+    Name        = each.value.app_name
     Environment = var.environment
     ManagedBy   = "Terraform"
   }
 }
 
 # Amplify Branch Configuration
-resource "aws_amplify_branch" "main_branch" {
-  app_id      = aws_amplify_app.lifedata_app.id
-  branch_name = var.branch_name
+resource "aws_amplify_branch" "app_branches" {
+  for_each = var.amplify_apps
+
+  app_id      = aws_amplify_app.lifedata_apps[each.key].id
+  branch_name = lookup(each.value, "branch_name", "main")
 
   stage           = var.stage_environment
   enable_auto_build = true
 
   tags = {
-    Name        = "${var.app_name}-${var.branch_name}"
+    Name        = "${each.value.app_name}-branch"
     Environment = var.environment
     ManagedBy   = "Terraform"
   }

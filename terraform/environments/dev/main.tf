@@ -122,9 +122,4 @@ module "appsync" {
 
 module "amplify" {
   source = "../../modules/web/amplify"
-  
-  app_name         = "lifedata-web"
-  repository_url   = "https://github.com/your-org/lifedata-web"
-  branch_name      = "main"
-  environment      = "dev"
 }
